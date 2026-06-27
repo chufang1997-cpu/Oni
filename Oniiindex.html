@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oni Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blush: #d4bfbb;
+    --blush-light: #e8dbd8;
+    --blush-pale: #f5efed;
+    --warm-dark: #5c3d2e;
+    --warm-mid: #8b6355;
+    --warm-soft: #b89080;
+    --ink: #3a2a24;
+    --paper: #faf7f5;
+  }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    text-align: center;
+    padding: 52px 24px 32px;
+    background: var(--blush-pale);
+    border-bottom: 1px solid var(--blush-light);
+  }
+
+  .logo-label {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    color: var(--warm-soft);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  header h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 300;
+    font-size: clamp(28px, 6vw, 42px);
+    letter-spacing: 0.18em;
+    color: var(--warm-dark);
+  }
+
+  header h1 span {
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--warm-soft);
+    vertical-align: middle;
+    margin: 0 10px;
+    margin-bottom: 4px;
+  }
+
+  /* ── Tab Nav ── */
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    background: var(--blush-pale);
+    padding: 0 24px 0;
+  }
+
+  .tab-btn {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--warm-soft);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 14px 28px 12px;
+    cursor: pointer;
+    transition: color 0.25s, border-color 0.25s;
+  }
+
+  .tab-btn:hover { color: var(--warm-mid); }
+
+  .tab-btn.active {
+    color: var(--warm-dark);
+    border-bottom-color: var(--warm-dark);
+    font-weight: 500;
+  }
+
+  /* ── Content ── */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 28px 72px;
+  }
+
+  /* ── Booking ── */
+  .section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 0.22em;
+    color: var(--warm-dark);
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .notice-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .notice-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--blush-light);
+  }
+
+  .notice-item:last-child { border-bottom: none; }
+
+  .notice-mark {
+    flex-shrink: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--warm-soft);
+    margin-top: 8px;
+  }
+
+  .notice-text {
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--ink);
+    font-weight: 300;
+  }
+
+  .notice-text strong {
+    font-weight: 500;
+    color: var(--warm-mid);
+  }
+
+  .notice-sub {
+    margin-top: 6px;
+    padding-left: 12px;
+    border-left: 2px solid var(--blush-light);
+    font-size: 13px;
+    color: var(--warm-mid);
+    line-height: 1.7;
+  }
+
+  /* ── Info box ── */
+  .info-block {
+    background: var(--blush-pale);
+    border: 1px solid var(--blush-light);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-top: 6px;
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--warm-mid);
+  }
+
+  /* ── Price ── */
+  .price-section {
+    margin-bottom: 40px;
+  }
+
+  .price-section-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--warm-soft);
+    margin-bottom: 16px;
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--blush-light);
+    gap: 16px;
+  }
+
+  .price-row:first-of-type { border-top: 1px solid var(--blush-light); }
+
+  .price-name {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  .price-name small {
+    display: block;
+    font-size: 12px;
+    color: var(--warm-soft);
+    margin-top: 3px;
+    font-weight: 300;
+  }
+
+  .price-amt {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--warm-dark);
+    white-space: nowrap;
+  }
+
+  .price-divider {
+    border: none;
+    border-top: 1px dashed var(--blush);
+    margin: 32px 0;
+  }
+
+  .promo-box {
+    background: var(--blush-pale);
+    border-left: 3px solid var(--blush);
+    padding: 16px 18px;
+    border-radius: 0 4px 4px 0;
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--warm-mid);
+  }
+
+  .promo-box p + p { margin-top: 4px; }
+
+  .promo-note {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--warm-soft);
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 28px 24px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    color: var(--warm-soft);
+    border-top: 1px solid var(--blush-light);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="logo-label">nail studio</p>
+  <h1><span></span> Oni Studio <span></span></h1>
+</header>
+
+<nav>
+  <button class="tab-btn active" onclick="switchTab('booking', this)">預約須知</button>
+  <button class="tab-btn" onclick="switchTab('price', this)">價目表</button>
+</nav>
+
+<!-- ── BOOKING ── -->
+<div id="booking" class="tab-panel active">
+  <main>
+    <p class="section-title">— 預約須知 —</p>
+    <div class="notice-list">
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          工作室內有<strong>柯基小店長</strong>！預約前請斟酌，或提前告知會怕狗
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          每個月 <strong>20 號</strong>開放下個月預約；僅接受本人預約，<strong>不可代約</strong>
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          預約請提供以下資料，以方便登記
+          <div class="info-block">
+            姓名 &nbsp;／&nbsp; 電話 &nbsp;／&nbsp; 日期 / 時段<br>
+            施作項目 &nbsp;／&nbsp; 是否卸甲
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          預約完成後才會附上完整地址，<strong>可攜伴一位，只限女性！</strong>
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          <strong>遲到 10 分鐘</strong>只能施作單色項目<br>
+          <strong>遲到 20 分鐘</strong>將直接取消（嚴格執行 恕不寬待），且需付空檔費 <strong>$750</strong>
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          未滿三次預約者，需預付 <strong>$500 定金</strong>（當日折抵）<br>
+          <div class="notice-sub">新舊客取消達 2 次者，下次預約需付 $500 定金</div>
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          更改或取消預約需<strong>提前五日</strong>告知，無故爽約 / 當日取消 <strong>恕不退定金</strong>
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          卸甲不續作請於預約時告知，<strong>不接受當日臨時更改</strong>
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          自帶圖款無法 100% 一樣，顏色需依現場色卡為主<br>
+          <div class="notice-sub">如想要成品和圖片一致，請找該圖片原店家施作</div>
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          作品<strong>七日內</strong>有非人為受損，可免費修補
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          本店<strong>無提供</strong>延甲、足部、病甲處理項目
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          如封鎖將會設成垃圾訊息，之後您的回覆將不會收到
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          環境及施作部分如有不滿意，歡迎在<strong>當下提出</strong>
+        </div>
+      </div>
+
+      <div class="notice-item">
+        <div class="notice-mark"></div>
+        <div class="notice-text">
+          請注意禮貌，美甲師有權不接沒禮貌的客人
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ── PRICE ── -->
+<div id="price" class="tab-panel">
+  <main>
+    <p class="section-title">— 價目表 —</p>
+
+    <div class="price-section">
+      <p class="price-section-label">凝膠項目 · Gel Services</p>
+
+      <div class="price-row">
+        <div class="price-name">透明凝膠</div>
+        <div class="price-amt">$600</div>
+      </div>
+      <div class="price-row">
+        <div class="price-name">
+          單色凝膠
+          <small>
+            多一色 +$50　／　霧面 +$100
+          </small>
+        </div>
+        <div class="price-amt">$800</div>
+      </div>
+      <div class="price-row">
+        <div class="price-name">鏡面 ｜ 貓眼 ｜ 法式 ｜ 漸層</div>
+        <div class="price-amt">$1,100</div>
+      </div>
+      <div class="price-row">
+        <div class="price-name">
+          造型凝膠
+          <small>依圖報價</small>
+        </div>
+        <div class="price-amt">$950 ~ 1,700 up</div>
+      </div>
+
+      <div class="notice-sub" style="margin-top:14px; font-size:12px;">
+        以上皆含　前置保養 ／ 增厚建構
+      </div>
+    </div>
+
+    <hr class="price-divider">
+
+    <div class="price-section">
+      <p class="price-section-label">卸甲服務 · Removal</p>
+
+      <div class="price-row">
+        <div class="price-name">
+          本店卸甲　續作 ／ 純卸甲
+          <small>純卸甲加基礎保養 +$200</small>
+        </div>
+        <div class="price-amt">$100 ／ $350</div>
+      </div>
+      <div class="price-row">
+        <div class="price-name">
+          他店卸甲　續作 ／ 純卸甲
+          <small>純卸甲加基礎保養 +$200</small>
+        </div>
+        <div class="price-amt">$200 ／ $500</div>
+      </div>
+      <div class="price-row">
+        <div class="price-name">補斷甲</div>
+        <div class="price-amt">$50 ／ 指</div>
+      </div>
+    </div>
+
+    <hr class="price-divider">
+
+    <div class="price-section">
+      <p class="price-section-label">優惠 · Promotions</p>
+      <div class="promo-box">
+        <p>📸　貼文 / 限時動態 標記分享，下次續作出示可折 <strong>$50</strong></p>
+        <p>🎂　當月壽星 出示證件可折 <strong>$100</strong></p>
+        <p class="promo-note">两項優惠可併用，壽星優惠限「造型凝膠」可使用</p>
+        <p class="promo-note">無足部 及 延甲服務</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>Oni Studio</footer>
+
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
